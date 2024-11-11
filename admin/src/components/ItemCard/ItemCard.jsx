@@ -95,7 +95,7 @@ const ItemCard = ({postData, fetchList, add=false}) => {
 }
 
 const removeItem = async(itemId) => {
-  const response = '';//await removeAuthItem(itemId);
+  const response = await removeAuthItem(itemId);
   //const response = await axios.post(`${url}${urlRemove}`,{id:itemId});
   await fetchList();
   if(response.data.success){

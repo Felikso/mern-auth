@@ -114,6 +114,7 @@ export const useAuthStore = create((set) => ({
 	removeAuthItem: async (itemId) => {
 		try {
 			const response = await axios.post(`${API_ITEMS_URL}/remove`,{id:itemId});
+			set({ message: response.data.message });
 			return response 
 		} catch (error) {
 			set({
@@ -128,6 +129,7 @@ export const useAuthStore = create((set) => ({
 			let activity = itemId?'update':'add';
 			const response = await axios.post(`${API_ITEMS_URL}/${activity}`,formData);
 			//const response = await axios.post(`${url}${newUrl}`, formData);
+			set({ message: response.data.message });
 			return response
 		} catch (error) {
 			set({
