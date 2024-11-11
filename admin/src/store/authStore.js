@@ -4,6 +4,8 @@ import { pagesLinks, customErrors } from "../utils/variables";
 
 const API_URL = import.meta.env.MODE === "development" ? "http://localhost:4000/api/auth" : "/api/auth";
 
+const API_ITEMS_URL = import.meta.env.MODE === "development" ? "http://localhost:4000/api/items" : "/api/items";
+
 axios.defaults.withCredentials = true;
 
 export const useAuthStore = create((set) => ({
@@ -18,6 +20,7 @@ export const useAuthStore = create((set) => ({
 		set({ isLoading: true, error: null });
 		try {
 			const response = await axios.post(`${API_URL}${pagesLinks.signup}`, { email, password, name });
+			console.log(`${API_URL}${pagesLinks.signup}`)
 			set({ user: response.data.user, isAuthenticated: true, isLoading: false });
 		} catch (error) {
 			set({ error: error.response.data.message || customErrors.signup, isLoading: false });
@@ -97,4 +100,16 @@ export const useAuthStore = create((set) => ({
 			throw error;
 		}
 	},
+	fetchAuthList: async () => {
+		try {
+			const response = await axios.get(`${API_ITEMS_URL}/list`);
+			set({ message: response.data.data});
+		} catch (error) {
+			set({
+				error: error.response.data
+			});
+			throw error;
+		}
+	},
+	
 }));

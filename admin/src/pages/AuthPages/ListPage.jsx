@@ -11,9 +11,13 @@ const ListPage = () => {
 
   const [list,setList] = useState([]);
 
+  const { fetchAuthList } = useAuthStore();
+
+  
+
  
   const fetchList = async () => {
-    const response = await axios.get(`${url}${urlList}`);
+    const response = await fetchAuthList();
     if(response.data.success){
       setList(response.data.data)
     }else{
