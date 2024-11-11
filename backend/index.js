@@ -19,8 +19,13 @@ const __dirname = path.resolve();
 
 app.use(cors({ origin: process.env.CLIENT_URL?process.env.CLIENT_URL:'http://localhost:5173', credentials: true }));
 
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', '*');
+	next();
+  });
+
 app.use(express.json()); // allows us to parse incoming requests:req.body
-app.use(cookieParser()); // allows us to parse incoming cookies
+app.use(cookieParser()); // s us to parse incoming cookies
 
 app.use('/api/auth', userRoute);
 
