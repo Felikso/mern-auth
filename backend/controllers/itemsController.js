@@ -16,6 +16,7 @@ const addItems = async (req,res) => {
         price:req.body.price,
         category:req.body.category,
         image:image_filename,
+        img:req.body.img
     })
     try{
         await items.save()

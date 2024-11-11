@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import { useAuthStore } from '../../store/authStore.js';
 const ItemCard = ({postData, fetchList, add=false}) => {
 
-    const {name, description, price, category, _id} = postData ? postData : '';
+    const {name, description, price, category, _id, img} = postData ? postData : '';
 
     const { removeAuthItem, updateAuthItem } = useAuthStore();
 
@@ -49,8 +49,25 @@ const ItemCard = ({postData, fetchList, add=false}) => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-
+console.log(image)
     if (window.confirm('czy na pewno chcesz edytować ten przedmiot?')) {
+
+
+              /**cloudinary */
+
+              const cloudData = new FormData();
+              cloudData.append('file',image);
+              cloudData.append('upload_preset','my_first_cloud');
+              cloudData.append('cloud_name','dwoh7xiks');   
+      
+              const res = await fetch('https://api.cloudinary.com/v1_1/dwoh7xiks/image/upload',{
+                method: 'POST',
+                body: cloudData
+              })
+      
+              const uploadedImageURL = await res.json()
+      
+               /**cloudinary */
 
 
         const formData = new FormData();
@@ -59,17 +76,19 @@ const ItemCard = ({postData, fetchList, add=false}) => {
         formData.append('price',Number(data.price));
         formData.append('category',data.category);
         formData.append('image',image);
+        formData.append('img',uploadedImageURL.url);
         if(_id){
           formData.append('id',_id);
         }
-        
+
+
 
     let newUrl = _id ? urlEdit : urlAdd
 
     const response = await updateAuthItem(_id,formData)
 
     //const response = await axios.post(`${url}${newUrl}`, formData);
- /*    console.log(response) */
+    console.log(response)
 
  
 
@@ -109,7 +128,7 @@ let allowEdit = edit ? 'allowEdit' : '';
 let disabled = edit ? '' : 'disabled'
 let imageId = edit ? 'image' : ''
 
-let placeholderImage = postData?.image ? `${url}${urlImg}${postData.image}` : assets.upload_area;
+let placeholderImage = img?img : (postData?.image ? `${url}${urlImg}${postData.image}` : assets.upload_area);
   return (
     
       <form onSubmit={onSubmitHandler} className={`addForm ${allowEdit}`}>
