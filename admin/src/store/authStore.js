@@ -111,5 +111,44 @@ export const useAuthStore = create((set) => ({
 			throw error;
 		}
 	},
+	fetchAuthList: async () => {
+		try {
+			const response = await axios.get(`${API_ITEMS_URL}/list`);
+			set({ message: response.data.data});
+		} catch (error) {
+			set({
+				error: error.response.data
+			});
+			throw error;
+		}
+	},
+	removeAuthItem: async (itemId) => {
+		try {
+			const response = await axios.post(`${API_ITEMS_URL}/remove`,{id:itemId});
+			set({ message: response.data.success}); 
+		} catch (error) {
+			set({
+				error: error.response
+			});
+			throw error;
+		}
+	},
+	updateAuthItem: async (itemId,formData) => {
+		try {
+
+			let activity = itemId?'update':'add';
+			const response = await axios.post(`${API_ITEMS_URL}/${activity}`,formData);
+			//const response = await axios.post(`${url}${newUrl}`, formData);
+			set({ message: response.data.success}); 
+		} catch (error) {
+			set({
+				error: error.response
+			});
+			throw error;
+		}
+	},
+
+
+
 	
 }));

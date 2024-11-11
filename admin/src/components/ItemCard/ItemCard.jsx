@@ -9,6 +9,8 @@ const ItemCard = ({postData}) => {
 
     const {name, description, price, category, _id} = postData ? postData : '';
 
+    const { removeAuthItem, updateAuthItem } = useAuthStore();
+
 
     const [edit,setEdit] = useState(false);
     const [image,setImage] = useState(false);
@@ -62,23 +64,12 @@ console.log('halo')
           formData.append('id',_id);
         }
         
-/* 
-    let o = Object.fromEntries(Object.entries(data).filter(([_, v]) => v != ''));
-    if(image){
-        o['image'] = image;
-
-    }
-console.log(typeof(image))
-    if(_id){
-    o['id'] = _id
-    }
-
-    
-    console.log(o) */
 
     let newUrl = _id ? urlEdit : urlAdd
 
-    const response = await axios.post(`${url}${newUrl}`, formData);
+    const response = await updateAuthItem(_id,formData)
+
+    //const response = await axios.post(`${url}${newUrl}`, formData);
     console.log(response)
 
     if(response.data.success&&!_id){
@@ -97,7 +88,8 @@ console.log(typeof(image))
 }
 
 const removeItem = async(itemId) => {
-  const response = await axios.post(`${url}${urlRemove}`,{id:itemId});
+  const response = await removeAuthItem(itemId);
+  //const response = await axios.post(`${url}${urlRemove}`,{id:itemId});
   await fetchList();
   if(response.data.success){
     toast.success(response.data.success);

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { listData, urlList, url, urlImg, urlRemove, tableTitle, errorMessage, urlUpdate } from '../../utils/variables'
 import { toast } from 'react-toastify';
+import { useAuthStore } from '../../store/authStore.js';
 
 import './AuthPages.css'
 import ItemCard from '../../components/ItemCard/ItemCard';
@@ -14,8 +15,6 @@ const ListPage = () => {
   const { fetchAuthList } = useAuthStore();
 
   
-
- 
   const fetchList = async () => {
     const response = await fetchAuthList();
     if(response.data.success){
@@ -25,7 +24,7 @@ const ListPage = () => {
     }
   }
 
-  const removeItem = async(itemId) => {
+  c/* onst removeItem = async(itemId) => {
     const response = await axios.post(`${url}${urlRemove}`,{id:itemId});
     await fetchList();
     if(response.data.success){
@@ -33,9 +32,9 @@ const ListPage = () => {
     }else{
       toast.error(errorMessage)
     }
-  }
+  } */
 
-  const updateItem = async(item) => {
+  /* const updateItem = async(item) => {
     const response = await axios.post(`${url}${urlUpdate}`,{
       name: item.name,
       urlUpdate: item.urlUpdate,
@@ -49,7 +48,7 @@ const ListPage = () => {
     }else{
       toast.error(errorMessage)
     }
-  }
+  } */
 
   useEffect(()=>{
     fetchList();
