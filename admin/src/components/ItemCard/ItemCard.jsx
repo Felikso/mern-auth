@@ -4,21 +4,21 @@ import { addData, categories, url, urlAdd, urlEdit, urlImg, urlRemove } from '..
 import { assets } from '../../assets/assets' 
 import axios from 'axios'
 import { toast } from 'react-toastify'
-
-const ItemCard = ({postData}) => {
+import { useAuthStore } from '../../store/authStore.js';
+const ItemCard = ({postData, fetchList, add=false}) => {
 
     const {name, description, price, category, _id} = postData ? postData : '';
 
     const { removeAuthItem, updateAuthItem } = useAuthStore();
 
 
-    const [edit,setEdit] = useState(false);
+    const [edit,setEdit] = useState(add);
     const [image,setImage] = useState(false);
     const [data,setData] = useState({
     name: name,
-    description:'',
-    price:'',
-    /* category:categories[0] */
+    description: description,
+    price: price,
+    category: category
   });
 
 /*   const {url,token,userName } = useContext(StoreContext) */
@@ -48,7 +48,6 @@ const ItemCard = ({postData}) => {
   },[data]) */
 
   const onSubmitHandler = async (e) => {
-console.log('halo')
     e.preventDefault();
 
     if (window.confirm('czy na pewno chcesz edytować ten przedmiot?')) {
@@ -70,16 +69,24 @@ console.log('halo')
     const response = await updateAuthItem(_id,formData)
 
     //const response = await axios.post(`${url}${newUrl}`, formData);
-    console.log(response)
+ /*    console.log(response) */
 
-    if(response.data.success&&!_id){
-      setData({
-        name:'',
-        description:'',
-        price:'',
-        category:categories[0]
-      })
-      setImage(false)
+ 
+
+    if(response.data.success){
+
+      if(!add){
+        await fetchList()
+      }else{
+        setData({
+          name:'',
+          description:'',
+          price:'',
+          category:categories[0]
+        })
+        setImage(false)
+      }
+
       toast.success(response.data.message)
     }else{
       toast.error(response.data.message)
@@ -88,7 +95,7 @@ console.log('halo')
 }
 
 const removeItem = async(itemId) => {
-  const response = await removeAuthItem(itemId);
+  const response = '';//await removeAuthItem(itemId);
   //const response = await axios.post(`${url}${urlRemove}`,{id:itemId});
   await fetchList();
   if(response.data.success){
@@ -107,9 +114,10 @@ let placeholderImage = postData?.image ? `${url}${urlImg}${postData.image}` : as
     
       <form onSubmit={onSubmitHandler} className={`addForm ${allowEdit}`}>
                                                       <p 
-            							onClick={() => {
+            							onClick={(e) => {
                             if (window.confirm('na pewno chcesz usunąć przedmiot?')) {
                               removeItem(_id)
+                              e.target.parentElement.classList.add('hidden');
                             }
                           }}
                         className='itemDelete'>x</p>
@@ -120,7 +128,7 @@ let placeholderImage = postData?.image ? `${url}${urlImg}${postData.image}` : as
           <label htmlFor='image'>
             <img src={image?URL.createObjectURL(image): placeholderImage} alt={assets.upload_area} />
           </label>
-          <input className={`${disabled}`} onChange={(e)=>(setImage(e.target.files[0]),console.log(e.target.files[0]))} type='file' id={imageId} hidden required /> 
+          <input className={`${disabled}`} onChange={(e)=>(setImage(e.target.files[0]),console.log(e.target.files[0]))} type='file' id={imageId} hidden /> 
         </div>
 
         <div className='addData'>
@@ -129,14 +137,14 @@ let placeholderImage = postData?.image ? `${url}${urlImg}${postData.image}` : as
           <input className={`${disabled}`} onChange={onChangeHandler} value={data.name} type='text' name='name' placeholder={addData.typeItemName}/>
 
           <p>{addData.itemDesc}</p>
-          <textarea className={`${disabled}`} onChange={(e)=>onChangeHandler(e)} value={data.description ? data.description : description} name='description' rows='6' placeholder={addData.typeItemDesc}></textarea>
+          <textarea className={`${disabled}`} onChange={(e)=>onChangeHandler(e)} value={data.description} name='description' rows='6' placeholder={addData.typeItemDesc}></textarea>
       </div>
 
      <div className="addCatPrice">
 
     <div className="addCat flexCol">
       <p>{addData.itemCat}</p>
-      <select className={`${disabled}`} onChange={onChangeHandler} value={data.category ? data.category : category} name='category'>
+      <select className={`${disabled}`} onChange={onChangeHandler} value={data.category} name='category'>
         {
           categories.map((item,i)=>(
             <option key={i} value={item.replace(' ','-')}>{item}</option>
@@ -146,7 +154,7 @@ let placeholderImage = postData?.image ? `${url}${urlImg}${postData.image}` : as
     </div>
     <div className="addPrice flexCol">
       <p>{addData.itemPrice}</p>
-      <input className={`${disabled}`} onChange={onChangeHandler} value={data.price ? data.price : price} type='number' name='price' placeholder={addData.typeItemPrice} />
+      <input className={`${disabled}`} onChange={onChangeHandler} value={data.price} type='number' name='price' placeholder={addData.typeItemPrice} />
     </div>
     <a onClick={handleEdit} className='addBtn'>{addData.editBtn}</a> 
 

@@ -17,14 +17,16 @@ const ListPage = () => {
   
   const fetchList = async () => {
     const response = await fetchAuthList();
+   // const response = await axios.get(`${url}${urlList}`);
+    console.log('lista załadowana')
     if(response.data.success){
-      setList(response.data.data)
+      setList((response.data.data).reverse())
     }else{
       toast.error(errorMessage)
     }
   }
 
-  c/* onst removeItem = async(itemId) => {
+  /* const removeItem = async(itemId) => {
     const response = await axios.post(`${url}${urlRemove}`,{id:itemId});
     await fetchList();
     if(response.data.success){
@@ -68,7 +70,7 @@ const ListPage = () => {
 
             {list.map((item,i)=>(
 
-            <ItemCard key={i} postData={item} />
+            <ItemCard key={i} postData={item} fetchList={fetchList} />
           ))}
           </div>
         

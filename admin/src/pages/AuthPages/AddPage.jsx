@@ -6,7 +6,7 @@ const AddPage = () => {
 
   return (
     <div>
-      <ItemCard />
+      <ItemCard add={true} />
     </div>
   )
 }

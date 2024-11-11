@@ -103,18 +103,7 @@ export const useAuthStore = create((set) => ({
 	fetchAuthList: async () => {
 		try {
 			const response = await axios.get(`${API_ITEMS_URL}/list`);
-			set({ message: response.data.data});
-		} catch (error) {
-			set({
-				error: error.response.data
-			});
-			throw error;
-		}
-	},
-	fetchAuthList: async () => {
-		try {
-			const response = await axios.get(`${API_ITEMS_URL}/list`);
-			set({ message: response.data.data});
+			return response
 		} catch (error) {
 			set({
 				error: error.response.data
@@ -125,7 +114,7 @@ export const useAuthStore = create((set) => ({
 	removeAuthItem: async (itemId) => {
 		try {
 			const response = await axios.post(`${API_ITEMS_URL}/remove`,{id:itemId});
-			set({ message: response.data.success}); 
+			return response 
 		} catch (error) {
 			set({
 				error: error.response
@@ -139,7 +128,7 @@ export const useAuthStore = create((set) => ({
 			let activity = itemId?'update':'add';
 			const response = await axios.post(`${API_ITEMS_URL}/${activity}`,formData);
 			//const response = await axios.post(`${url}${newUrl}`, formData);
-			set({ message: response.data.success}); 
+			return response
 		} catch (error) {
 			set({
 				error: error.response

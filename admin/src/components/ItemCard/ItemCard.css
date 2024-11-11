@@ -7,6 +7,7 @@
     -moz-box-shadow: -9px 9px 24px 0px rgb(0, 0, 0);
     box-shadow: -9px 9px 24px 0px rgb(0, 0, 0);
     position: relative;
+    transition: 3s ease;
 }
 
 .itemDelete{
@@ -166,4 +167,15 @@
 
 .disabled{
     /* pointer-events: none; */
+}
+
+
+.hidden {
+ /*    position: absolute; */
+    transform: translate(-2000px, 0px);
+/*     z-index: 1000000000000; */
+}
+
+.none {
+    display: none;
 }

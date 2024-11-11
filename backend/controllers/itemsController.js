@@ -16,7 +16,6 @@ const addItems = async (req,res) => {
         price:req.body.price,
         category:req.body.category,
         image:image_filename,
-        img:req.body.img,
     })
     try{
         await items.save()
@@ -68,15 +67,19 @@ const removeItem = async (req,res) => {
 }
 
 const updateItem = async (req,res) => {
-    let image_filename = req.file ? req.file.filename : 'default.png';
+    //let image_filename = req.file ? req.file.filename : 'default.png';
     try {
         await itemsModel.findByIdAndUpdate(req.body.id,{
             name:req.body.name,
             description:req.body.description,
             price:req.body.price,
             category:req.body.category,
-            image:image_filename,
         });
+        if(req.file){
+            await itemsModel.findByIdAndUpdate(req.body.id,{
+                image:req.file.filename,
+            });
+        }
         res.json({success:true,message:'item updated'})
     } catch (error) {
         console.log(error)
