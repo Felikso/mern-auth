@@ -10,6 +10,21 @@ const addItems = async (req,res) => {
 
     let image_filename = req.file ? `${req.file.filename}` : 'default.png';
 
+
+/*     const cloudData = new FormData();
+    cloudData.append('file',req.file);
+    cloudData.append('upload_preset',process.env.CLOUDINARY_CLOUD_NAME);
+    cloudData.append('cloud_name', process.env.CLOUDINARY_API_KEY,);   
+
+    const ress = await fetch(process.env.CLOUDINARY_URL_KEY,{
+      method: 'POST',
+      body: cloudData
+    })
+
+    console.log(ress)
+
+    const uploadedImageURL = await ress.json()  */
+
     const items = new itemsModel({
         name:req.body.name,
         description:req.body.description,
