@@ -15,7 +15,7 @@ export const emailNoExistsMess = 'taki mail nie istnieje :/'
 export const passwordUpdatedMess = 'hasło pomyślnie zostało zmienione'
 export const wrongTokenMess = 'błędny odnośnik do konta'
 
-export const frontend_url = 'http://localhost:5173'
+export const frontend_url = process.env.CLIENT_URL?process.env.CLIENT_URL:'http://localhost:5173'
 export const verifyUrl = '/weryfikacja' //remember in frontend
 export const oderSlug = 'zamowienia' //and name of new database
 export const userOrdersUrl = '/zamowienia-klienta'
