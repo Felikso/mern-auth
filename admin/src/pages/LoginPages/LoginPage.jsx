@@ -79,7 +79,7 @@ const LoginPage = () => {
 					{dontHaveAccount}
 					{'   '}
 					<Link
-						to={pagesLinks.signup}
+						to={`/${pagesLinks.signup}`}
 						className='animationLink'
 						data-replace={signUp}
 					>

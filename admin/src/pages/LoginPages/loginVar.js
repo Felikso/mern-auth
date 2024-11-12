@@ -4,8 +4,17 @@ export const pagesLinks = {
     order: 'podsumowanie',
     verify: 'weryfikacja',
     myorders: 'zamowienia',
-    login: 'login',
-    forgotPass: 'forgot-password'
+    list: '/lista',
+    add: '/dodaj',
+    orders: '/zamówienia',
+    login: '/login',
+    logout: '/logout',
+    signup: '/signup',
+    checkAuth: '/check-auth',
+/*     checkAuth: '/check-auth', */
+    forgotPass: '/forgot-password',
+    resetPass: '/reset-password',
+    verifyEmail: '/verify-email',
 }
 
 
