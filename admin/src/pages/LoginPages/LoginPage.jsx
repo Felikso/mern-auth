@@ -13,12 +13,13 @@ import {
 	loginBtnText,
 	loginBtnTextAnimate,
 	pagesLinks,
-} from '../../utils/variables.jsx';
+} from './loginVar.js';
 import Button from '../../components/Button/Button.jsx';
 
 const LoginPage = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const checkAdmin = true; //check if user is admin or not
 
 	const { login, isLoading, error } = useAuthStore();
 
@@ -26,7 +27,7 @@ const LoginPage = () => {
 		e.preventDefault();
 		console.log(email);
 		console.log(password);
-		await login(email, password);
+		await login(email, password, checkAdmin);
 	};
 
 	return (
@@ -56,7 +57,7 @@ const LoginPage = () => {
 
 					<div className='linksBox'>
 						<Link
-							to={pagesLinks.forgotPass}
+							to={`/${pagesLinks.forgotPass}`}
 							className='animationLink'
 							data-replace={remindPass}
 						>

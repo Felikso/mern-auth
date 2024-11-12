@@ -61,6 +61,7 @@ function App() {
 
 	useEffect(() => {
 		checkAuth();
+		console.log('sprawdzam')
 	}, [checkAuth]);
 
 	if (isCheckingAuth) return <LoadSpinner />;

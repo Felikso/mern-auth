@@ -34,7 +34,7 @@ const placeOrder = async (req,res) => {
 
         var mailOptions = {
             from: process.env.EMAIL,
-            to: user.email,
+            to: req.body.address.email,
             subject: 'kod weryfikacyjny',
             //text: ` przepisz kod we wskazanym miejscu  ${verificationToken}`
 			html: VERIFICATION_EMAIL_TEMPLATE.replace('{verificationCode}','test'),

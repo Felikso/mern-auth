@@ -27,10 +27,13 @@ export const useAuthStore = create((set) => ({
 			throw error;
 		}
 	},
-	login: async (email, password) => {
+	login: async (email, password, checkAdmin) => {
 		set({ isLoading: true, error: null });
 		try {
-			const response = await axios.post(`${API_URL}${pagesLinks.login}`, { email, password });
+			const response = await axios.post(`${API_URL}${pagesLinks.login}`, { email, password, checkAdmin });
+
+			//817867
+
 			set({
 				isAuthenticated: true,
 				user: response.data.user,

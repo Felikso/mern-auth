@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import toast from "react-hot-toast";
-import { emailVeryData } from '../../utils/variables'
+import { emailVeryData } from './loginVar.js'
 import Button from "../../components/Button/Button";
 
 import './LoginPages.css'

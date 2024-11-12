@@ -36,7 +36,9 @@ export const customErrors = {
     inLogin: 'błąd przy próbie zalogowania',
     userNotFound: 'nie udało sie znaleźć konta',
     forgotPassword: 'problem podczas resetowania hasła',
-    inCheckAuth: 'błąd poczas autoryzacji'
+    inCheckAuth: 'błąd poczas autoryzacji',
+    usernNotVerified: 'użytkownik nie jest zwryfikowany, na adres e-mail ponownie została wysłana wiadomość z kodem weryfikacynym',
+    userNotAdmin: 'potrzebujesz większych uprawnień, żeby się zalogować, skontaktuj się z administratoem strony'
 
 
 

@@ -5,21 +5,19 @@ import Input from '../../components/Input/Input.jsx';
 import { useAuthStore } from '../../store/authStore.js';
 import {
 	formData,
-	welcomeTitle,
 	pagesLinks,
-    createAccountData,
-	customErrors,
-	customInfo
-} from '../../utils/variables.jsx';
+	createAccountData,
+	customInfo,
+} from './loginVar.js';
 import Button from '../../components/Button/Button.jsx';
 import PasswordStrengthMeter from '../../components/PasswordStrengthMeter/PasswordStrengthMeter.jsx';
 
 const SignUpPage = () => {
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
 
-	const [strongPassword, setStrongPassword] = useState(false)
+	const [strongPassword, setStrongPassword] = useState(false);
 	const navigate = useNavigate();
 
 	const { signup, error, isLoading } = useAuthStore();
@@ -37,10 +35,14 @@ const SignUpPage = () => {
 	return (
 		<div className='cardContent'>
 			<div className='formBox'>
-				<h2 className='title textTogradient'>{createAccountData.createAccountTitle}</h2>
+				<h2 className='title textTogradient'>
+					{createAccountData.createAccountTitle}
+				</h2>
 
-				<form onSubmit={strongPassword ? handleSignUp : (e)=>e.preventDefault()}>
-                    <Input
+				<form
+					onSubmit={strongPassword ? handleSignUp : (e) => e.preventDefault()}
+				>
+					<Input
 						icon={User}
 						type='text'
 						placeholder={formData.namePlaceholder}
@@ -67,9 +69,14 @@ const SignUpPage = () => {
 					/>
 
 					{error && <p className='textError'>{error}</p>}
-					{!strongPassword && <p className='infoLink'>{customInfo.strongPassword}</p>}
-					
-					<PasswordStrengthMeter password={password} setStrongPassword={setStrongPassword}/>
+					{!strongPassword && (
+						<p className='infoLink'>{customInfo.strongPassword}</p>
+					)}
+
+					<PasswordStrengthMeter
+						password={password}
+						setStrongPassword={setStrongPassword}
+					/>
 					<Button
 						text={createAccountData.signUpBtnText}
 						animateText={createAccountData.signUpProcess}

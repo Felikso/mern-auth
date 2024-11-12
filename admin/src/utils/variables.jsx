@@ -26,12 +26,11 @@ export const customErrors = {
     resetPass: 'wystąpił problem przy resetowaniu hasła',
     remindPassMail: 'wystąpił problem przy wysyłaniu e-maila',
     invalidCredentials: 'nieprawidłowe dane',
+    userNotAdmin: 'nie masz odpowiednich uprawnień'
 }
 
 export const customInfo = {
     strongPassword: 'pamiętaj o ustawieniu silnego hasła'
-
-
 }
 
 
