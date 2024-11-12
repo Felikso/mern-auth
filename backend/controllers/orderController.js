@@ -1,21 +1,56 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
+import transporter from "../utils/transporter.js";
 /* import Stripe from "stripe"; */
-import { verifyUrl, frontend_url, deliveryChargesMess, modePayment, oderSlug, removedMessage, errorMessage } from '../variables.js'
+import { customErrors, customInfo ,verifyUrl, frontend_url, deliveryChargesMess, modePayment, oderSlug, removedMessage, errorMessage } from '../utils/variables.js'
+
+
+
+import {
+	PASSWORD_RESET_REQUEST_TEMPLATE,
+	PASSWORD_RESET_SUCCESS_TEMPLATE,
+	VERIFICATION_EMAIL_TEMPLATE,
+} from "../utils/emailTemplates.js";
 
 /* const stripe = Stripe(process.env.STRIPE_SECRET_KEY); */
 
 //placing user order for frontend
 const placeOrder = async (req,res) => {
 
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+
     try {
         const newOrder = new orderModel({
             userId:req.body.userId,
             items:req.body.items,
             amount:req.body.amount,
-            address:req.body.address
+            address:req.body.address,
+            verificationCode,
+            verificationCodeExpiresAt: Date.now() + 60 * 60 * 1000, // 1 hour
         })
         await newOrder.save();
+
+
+        var mailOptions = {
+            from: process.env.EMAIL,
+            to: user.email,
+            subject: 'kod weryfikacyjny',
+            //text: ` przepisz kod we wskazanym miejscu  ${verificationToken}`
+			html: VERIFICATION_EMAIL_TEMPLATE.replace('{verificationCode}','test'),
+			//html: `<h2>${verificationToken}<h/2><p>lol</p>`
+          };
+          
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log(customInfo.emailSent + info.response);
+              //return res.json({success:true,message:'shortPassMess'}) 
+            }
+          });
+
+
         await userModel.findByIdAndUpdate(req.body.userId,{cartData:{}});
 
         const line_items = req.body.items.map((item)=>({
@@ -61,6 +96,57 @@ const placeOrder = async (req,res) => {
     }
 
 }
+
+const verifyOrderCode = async (req, res) => {
+	const { code } = req.body;
+	try {
+		const order = await orderModel.findOne({
+			verificationToken: code,
+			verificationTokenExpiresAt: { $gt: Date.now() },
+		});
+
+		if (!order) {
+			return res.status(400).json({ success: false, message: customErrors.expiriedCode});
+		}
+
+		order.isVerified = true;
+		order.verificationToken = undefined;
+		order.verificationTokenExpiresAt = undefined;
+		await order.save();
+
+		//await sendWelcomeEmail(user.email, user.name);
+
+		/** mail */
+		var mailOptions = {
+            from: process.env.EMAIL,
+            to: user.email,
+            subject: 'potwierdzone zamówienie w trakcie realizacji',
+			html: PASSWORD_RESET_REQUEST_TEMPLATE
+
+          };
+          
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log(customInfo.emailSent + info.response);
+              //return res.json({success:true,message:'shortPassMess'}) 
+            }
+          });
+
+		res.status(200).json({
+			success: true,
+			message: customInfo.emailSentSuccessfully,
+			user: {
+				...user._doc,
+				password: undefined,
+			},
+		});
+	} catch (error) {
+		console.log(customErrors.inVeirfyEmail, error);
+		res.status(500).json({ success: false, message: customErrors.serverError });
+	}
+};
 
 const verifyOrder = async (req,res) => {
     const {orderId,success} = req.body;
@@ -126,4 +212,4 @@ const removeOrder = async (req,res) => {
 
 
 
-export {placeOrder,verifyOrder,userOrders,listOrders,updateStatus,removeOrder}
+export {placeOrder,verifyOrder,userOrders,listOrders,updateStatus,removeOrder,verifyOrderCode}

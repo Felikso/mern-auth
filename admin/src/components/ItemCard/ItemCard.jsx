@@ -116,12 +116,13 @@ console.log(image)
 const removeItem = async(itemId) => {
   const response = await removeAuthItem(itemId);
   //const response = await axios.post(`${url}${urlRemove}`,{id:itemId});
-  await fetchList();
+
   if(response.data.success){
     toast.success(response.data.success);
   }else{
     toast.error(errorMessage)
   }
+  await fetchList();
 }
 
 let allowEdit = edit ? 'allowEdit' : '';

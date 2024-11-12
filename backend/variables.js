@@ -17,5 +17,6 @@ export const wrongTokenMess = 'błędny odnośnik do konta'
 
 export const frontend_url = process.env.CLIENT_URL?process.env.CLIENT_URL:'http://localhost:5173'
 export const verifyUrl = '/weryfikacja' //remember in frontend
+export const verifyOrderUrl = '/weryfikacja-zamowienia' //remember in frontend
 export const oderSlug = 'zamowienia' //and name of new database
 export const userOrdersUrl = '/zamowienia-klienta'

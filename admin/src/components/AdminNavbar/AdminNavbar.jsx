@@ -5,7 +5,7 @@ import { brandData, formData, authList } from '../../utils/variables.jsx';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext.jsx';
 import { useAuthStore } from '../../store/authStore';
-
+import { Camera } from 'lucide-react';
 import { replacePolishLetters } from '../../utils/functions.js';
 import BurgerMenu from '../BurgerMenu/BurgerMenu.jsx';
 
@@ -26,6 +26,7 @@ const AdminNavbar = () => {
 
 	return (
 		<>
+	<Camera color="red" size={48} />;
 			<Link to='/'>
 				<img
 					src={assets.logo}
@@ -73,7 +74,7 @@ const AdminNavbar = () => {
 				>
 					<div className='navProfile'>
 						<img src={assets.profile_image} alt='' className='profile' />
-						{/* <p>{user.name}</p> */}
+						<p>{user.name}</p>
 					</div>
 					<a className={`logOutImg ${isHovered ? 'hoverImg' : ''}`}>
 						<img
